@@ -83,12 +83,15 @@
                             <td>Gracia</td>
                             <td>Cabang</td>
                             <td>Linda</td>
-                            <td class="text-center">
+                            <td class="text-center" style="white-space: nowrap;">
+                                <a href="#" class="btn btn-danger btn-sm">
+                                    <i class="fas fa-trash"></i>
+                                </a>
                                 <a href="#" class="btn btn-warning btn-sm">
                                     <i class="fas fa-edit"></i>
                                 </a>
-                                <a href="#" class="btn btn-danger btn-sm">
-                                    <i class="fas fa-trash"></i>
+                                <a href="#" class="btn btn-success btn-sm">
+                                    <i class="fas fa-check"></i>
                                 </a>
                         </tr>
                     </tbody>
