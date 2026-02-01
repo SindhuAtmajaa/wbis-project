@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\KjppController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\NasabahController;
 use App\Http\Controllers\DashboardController;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
@@ -44,6 +45,9 @@ Route::middleware('checkLogin')->group(function () {
 
     // //Admin-kjpp
     Route::get('kjpp',[KjppController::class, 'index'])->name('kjpp');
+
+    // //Admin-nasabah
+    Route::get('nasabah',[NasabahController::class, 'index'])->name('nasabah');
 });
 
 // //dashboard

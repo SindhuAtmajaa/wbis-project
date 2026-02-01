@@ -52,18 +52,15 @@
             </div>
 
             <!-- Nav Item - Nasabah -->
-            <li class="nav-item">
-                <a class="nav-link" href="tables.html">
+            <li class="nav-item {{ $menuNasabah?? '' }}">
+                <a class="nav-link" href="{{ route('nasabah') }}">
                     <i class="fas fa-fw fa-user-plus"></i>
                     <span>Nasabah</span></a>
             </li>
 
-            <!-- Nav Item - KJPP -->
-            <li class="nav-item">
-                <a class="nav-link" href="tables.html">
-                    <i class="fas fa-fw fa-address-card"></i>
-                    <span>Info KJPP</span></a>
-            </li>
+            <!-- Divider -->
+            {{-- <hr class="sidebar-divider d-none d-md-block"> --}}
+            <hr class="sidebar-divider">
 
             <!-- Sidebar Toggler (Sidebar) -->
             <div class="text-center d-none d-md-inline">

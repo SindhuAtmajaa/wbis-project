@@ -10,9 +10,9 @@ class NasabahController extends Controller
     public function index()
     {
         $data = [
-            'title' => 'Data User',
+            'title' => 'Data Nasabah',
             'menuNasabah' => 'active',
         ];
-        // return view('admin/user/index',$data); nanti diganti foldernya karena ini fitur global bukan admin, berarti masuknya karyawan
+         return view('admin/nasabah/index',$data);
     }
 }
