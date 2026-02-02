@@ -24,6 +24,7 @@ return new class extends Migration
 
             $table->date('tgl_order')->nullable();
             $table->date('tgl_survey')->nullable();
+            $table->date('tgl_bap_jadi')->nullable();
             $table->integer('waktu');
             $table->bigInteger('nominal')->nullable();
             $table->bigInteger('biaya_transportasi')->nullable();
@@ -32,6 +33,7 @@ return new class extends Migration
 
             $table->string('keterangan')->nullable();
             $table->string('status_pembayaran',100)->nullable();
+            $table->date('tgl_bayar')->nullable();
             $table->string('nama_ao',50)->nullable();
             $table->string('unit',50)->nullable();
 
