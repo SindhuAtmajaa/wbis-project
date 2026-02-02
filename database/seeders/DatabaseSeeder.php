@@ -21,7 +21,7 @@ class DatabaseSeeder extends Seeder
             'tgl_lahir' => '2000-01-01',
             'alamat'    => 'Jl. Admin',
             'no_hp'     => '087847487197',
-            'password'  => 'admin2025',
+            'password'  => '123123',
             'jabatan'   => 'Admin',
         ]);
 
