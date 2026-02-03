@@ -49,4 +49,9 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function pengajuanAgunans()
+    {
+        return $this->hasMany(PengajuanAgunan::class, 'verifikator_id');
+    }
 }
