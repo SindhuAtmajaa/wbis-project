@@ -8,7 +8,7 @@
     <div class="card">
         <div class="card-header d-flex flex-wrap justify-content-between">
             <div class="mb-1">
-                <a href="" class="btn btn-sm btn-primary">
+                <a href="{{ route('nasabahCreate') }}" class="btn btn-sm btn-primary">
                     <i class="fas fa-plus mr-2"></i> Tambah Data
                 </a>
             </div>

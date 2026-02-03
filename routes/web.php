@@ -48,6 +48,8 @@ Route::middleware('checkLogin')->group(function () {
 
     // //Admin-nasabah
     Route::get('nasabah',[NasabahController::class, 'index'])->name('nasabah');
+    Route::get('nasabah/create',[NasabahController::class, 'create'])->name('nasabahCreate');
+    Route::post('nasabah/store',[NasabahController::class, 'store'])->name('nasabahStore');
 
     Route::post('nasabah/verify/{id}', [NasabahController::class, 'verify'])->name('nasabahVerify');
     Route::post('nasabah/cancel/{id}', [NasabahController::class, 'cancel'])->name('nasabahCancel');
