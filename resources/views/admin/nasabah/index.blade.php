@@ -25,7 +25,7 @@
 
         <div class="card-body">        
             <div class="table-responsive">
-                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0"> 
+                <table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="0"> 
                     <thead>
                         <tr class="text-center">
                             <th>No</th>
@@ -58,39 +58,39 @@
                     </thead>
                     <tbody>
                         @foreach($nasabah as $item)
-                        <tr>
+                        <tr class="double-clickable" data-href="{{ route('nasabahEdit', $item->id) }}">
                             <td class="text-center">{{ $loop->iteration }}</td>
                             <td>{{ $item->nama_nasabah }}</td>
-                            <td>{{ $item->cabang->nama_cabang }}</td>
+                            <td class="text-center">{{ $item->cabang->nama_cabang }}</td>
                             <td>{{ $item->kcp }}</td>
-                            <td>{{ $item->jenis_agunan }}</td>
+                            <td class="text-center">{{ $item->jenis_agunan }}</td>
                             <td>{{ $item->beban_biaya }}</td>
-                            <td>{{ $item->npwp }}</td>
+                            <td class="text-center">{{ $item->npwp }}</td>
                             <td>{{ $item->dokumen }}</td>
                             <td>{{ $item->kjpp->nama_kjpp }}</td>
                             <td>{{ $item->kjpp->rekening_kjpp }}</td>
                             <td>{{ $item->tgl_order?->isoFormat('D MMMM Y') }}</td>
-                            <td>{{ $item->cabang->sla }}</td>
+                            <td class="text-center">{{ $item->cabang->sla }}</td>
                             <td>{{ $item->tgl_survey?->isoFormat('D MMMM Y') }}</td>
                             <td>{{ $item->tgl_bap_jadi?->isoFormat('D MMMM Y') }}</td>
-                            <td>{{ $item->waktu }} hari</td>
-                            <td>{{ $item->nominal }}</td>
-                            <td>{{ $item->biaya_transportasi }}</td>
-                            <td>{{ $item->denda }}</td>
+                            <td class="text-center">{{ $item->waktu }} hari</td>
+                            <td class="text-center">{{ number_format($item->nominal, 0, ',', '.') }}</td>
+                            <td class="text-center">{{ number_format($item->biaya_transportasi, 0, ',', '.') }}</td>
+                            <td class="text-center">{{ number_format($item->denda, 0, ',', '.') }}</td>
                             <td>{{ $item->service_level }}</td>
                             <td>{{ $item->keterangan }}</td>
                             <td>{{ $item->status_pembayaran }}</td>
                             <td>{{ $item->tgl_bayar?->isoFormat('D MMMM Y') }}</td>
-                            <td>{{ $item->nama_ao }}</td>
-                            <td>{{ $item->unit }}</td>
+                            <td class="text-center">{{ $item->nama_ao }}</td>
+                            <td class="text-center">{{ $item->unit }}</td>
                             <td class = "text-center">{{ $item->verifikator?->nama }}</td>
                             <td class="text-center" style="white-space: nowrap;">
                                 <a href="#" class="btn btn-danger btn-sm">
                                     <i class="fas fa-trash"></i>
                                 </a>
-                                <a href="#" class="btn btn-warning btn-sm">
+                                {{-- <a href="{{ route('nasabahEdit', $item->id) }}" class="btn btn-warning btn-sm">
                                     <i class="fas fa-edit"></i>
-                                </a>
+                                </a> --}}
                                 <a href="#" class="btn btn-success btn-sm">
                                     <i class="fas fa-check"></i>
                                 </a>
@@ -103,3 +103,21 @@
         </div>
     </div>
 @endsection
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const rows = document.querySelectorAll('.double-clickable');
+        
+        rows.forEach(row => {
+            row.addEventListener('dblclick', function(e) {
+                // Cek agar tidak konflik jika user klik tombol aksi
+                if (!e.target.closest('button') && !e.target.closest('a')) {
+                    window.location.href = this.dataset.href;
+                }
+            });
+            
+            // Tambahkan sedikit efek visual agar user tahu row ini bisa diinteraksi
+            row.style.cursor = 'pointer';
+        });
+    });
+</script>

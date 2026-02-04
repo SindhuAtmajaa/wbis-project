@@ -16,7 +16,7 @@ class NasabahController extends Controller
         $data = [
             'title'         => 'Data Nasabah',
             'menuNasabah'   => 'active',
-            'nasabah'       => PengajuanAgunan::with(['cabang','kjpp','verifikator'])->get(),
+            'nasabah'       => PengajuanAgunan::with(['cabang','kjpp','verifikator'])->orderBy('created_at','desc')->get(),
         ];
          return view('admin/nasabah/index',$data);
     }
@@ -35,7 +35,7 @@ class NasabahController extends Controller
 
     public function store(Request $request)
     {
-        // 1. Validasi Super Lengkap untuk Semua Kolom Form Kamu
+        // 1. Validasi Lengkap untuk Semua Kolom Form
         $request->validate([
             'nama_nasabah'       => 'required|string|max:255',
             'cabang_id'          => 'required|exists:cabangs,id',
@@ -84,6 +84,69 @@ class NasabahController extends Controller
         \App\Models\PengajuanAgunan::create($nasabah);
 
         return redirect()->route('nasabahCreate')->with('success', 'Data pengajuan berhasil disimpan!');
+    }
+
+    public function edit($id)
+    {
+        $data = array(
+            'title'         => 'Edit Data Nasabah',
+            'menuNasabah'   => 'active',
+            'nasabah'       => PengajuanAgunan::findOrFail($id),
+            'cabangs'       => Cabang::all(),
+            'kjpps'         => Kjpp::all(),
+        );
+        return view('admin/nasabah/edit', $data);
+    }
+
+    public function update(Request $request, $id)
+    {
+        // 1. Validasi (Sama seperti saat store)
+        $request->validate([
+            'nama_nasabah'       => 'required|string|max:255',
+            'cabang_id'          => 'required|exists:cabangs,id',
+            'kcp'                => 'required|string',
+            'jenis_agunan'       => 'required|string',
+            'beban_biaya'        => 'required',
+            'npwp'               => 'required|string|max:20',
+            'dokumen'            => 'required',
+            'kjpp_id'            => 'required|exists:kjpps,id',
+            'tgl_order'          => 'required|date',
+            'tgl_survey'         => 'required|date',
+            'tgl_bap_jadi'       => 'required|date',
+            'nominal'            => 'required|numeric|min:0',
+            'biaya_transportasi' => 'nullable|numeric|min:0',
+            'keterangan'         => 'nullable|string',
+            'status_pembayaran'  => 'nullable|string',
+            'tgl_bayar'          => 'nullable|date',
+            'nama_ao'            => 'nullable|string',
+            'unit'               => 'nullable|string',
+        ], [
+            // Pesan Error
+            'nama_nasabah.required' => 'Nama debitur wajib diisi.',
+            'cabang_id.required'    => 'Cabang tidak boleh kosong.',
+            'cabang_id.exists'      => 'Cabang yang dipilih tidak valid dalam database.',
+            'kjpp_id.required'      => 'KJPP tidak boleh kosong.',
+            'tgl_order.required'    => 'Tanggal Order tidak boleh kosong.',
+            'tgl_survey.required'   => 'Tanggal Survey tidak boleh kosong.',
+            'tgl_bap_jadi.required' => 'Tanggal BAP tidak boleh kosong.',
+            'nominal.required'      => 'Nominal tidak boleh kosong.',
+            'nominal.numeric'       => 'Nominal harus berupa angka (tanpa titik/huruf).',
+            'biaya_transportasi.numeric' => 'Biaya transportasi harus berupa angka.',
+            'kcp.required'            => 'KCP tidak boleh kosong.',
+            'jenis_agunan.required'   => 'Jenis agunan tidak boleh kosong.',
+            'beban_biaya.required'    => 'Beban biaya tidak boleh kosong.',
+            'npwp.required'           => 'NPWP tidak boleh kosong.',
+            'dokumen.required'        => 'Dokumen tidak boleh kosong.',
+        ]);
+
+        // 2. Cari data lama
+        $nasabah = PengajuanAgunan::findOrFail($id);
+        
+        // 3. Update dengan data baru
+        // Ini otomatis memicu TRIGGER UPDATE di database untuk hitung ulang denda
+        $nasabah->update($request->all());
+
+        return redirect()->route('nasabah')->with('success', 'Data berhasil diperbarui');
     }
 
     public function verify($id)

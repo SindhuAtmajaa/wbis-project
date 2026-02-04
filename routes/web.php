@@ -51,6 +51,9 @@ Route::middleware('checkLogin')->group(function () {
     Route::get('nasabah/create',[NasabahController::class, 'create'])->name('nasabahCreate');
     Route::post('nasabah/store',[NasabahController::class, 'store'])->name('nasabahStore');
 
+    Route::get('nasabah/edit/{id}',[NasabahController::class, 'edit'])->name('nasabahEdit');
+    Route::post('nasabah/update/{id}',[NasabahController::class, 'update'])->name('nasabahUpdate');
+
     Route::post('nasabah/verify/{id}', [NasabahController::class, 'verify'])->name('nasabahVerify');
     Route::post('nasabah/cancel/{id}', [NasabahController::class, 'cancel'])->name('nasabahCancel');
 });
