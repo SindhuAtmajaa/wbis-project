@@ -84,16 +84,47 @@
                             <td class="text-center">{{ $item->nama_ao }}</td>
                             <td class="text-center">{{ $item->unit }}</td>
                             <td class = "text-center">{{ $item->verifikator?->nama }}</td>
-                            <td class="text-center" style="white-space: nowrap;">
-                                <a href="#" class="btn btn-danger btn-sm">
-                                    <i class="fas fa-trash"></i>
-                                </a>
-                                {{-- <a href="{{ route('nasabahEdit', $item->id) }}" class="btn btn-warning btn-sm">
-                                    <i class="fas fa-edit"></i>
-                                </a> --}}
-                                <a href="#" class="btn btn-success btn-sm">
-                                    <i class="fas fa-check"></i>
-                                </a>
+                            <td class="text-center">
+                                <div class="d-flex justify-content-center align-items-center" style="gap: 5px;">
+                                    <div>
+                                        <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#exampleModal{{ $item->id }}">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                        @include('admin/nasabah/modal')
+                                    </div>
+
+                                    @php
+                                        $user = Auth::user();
+                                        // Sesuaikan dengan nama kolom 'jabatan' dan value 'Admin'
+                                        $isAdmin = ($user->jabatan == 'Admin');
+                                        $isVerifikator = ($user->id == $item->verifikator_id);
+                                        $hasVerifikator = !is_null($item->verifikator_id);
+                                    @endphp
+
+                                    @if(!$hasVerifikator)
+                                        <form action="{{ route('nasabahVerify', $item->id) }}" method="POST" class="m-0">
+                                            @csrf
+                                            <button type="submit" class="btn btn-sm btn-success" title="Verifikasi" onclick="return confirm('Verifikasi data ini?')">
+                                                <i class="fas fa-check"></i>
+                                            </button>
+                                        </form>
+
+                                    {{-- KONDISI 2: Admin ATAU Verifikator Asli (Tombol Hijau untuk Batal) --}}
+                                    @elseif($isAdmin || $isVerifikator)
+                                        <form action="{{ route('nasabahCancel', $item->id) }}" method="POST" class="m-0">
+                                            @csrf
+                                            <button type="submit" class="btn btn-sm btn-success" title="Batalkan Verifikasi" onclick="return confirm('Batalkan verifikasi ini?')">
+                                                <i class="fas fa-check"></i>
+                                            </button>
+                                        </form>
+
+                                    {{-- KONDISI 3: Staff lain (Tombol Abu-abu) --}}
+                                    @else
+                                        <button class="btn btn-sm btn-secondary" disabled title="Diverifikasi oleh {{ $item->verifikator->name ?? 'User' }}">
+                                            <i class="fas fa-check"></i>
+                                        </button>
+                                    @endif
+                                </div>
                             </td>
                         </tr>
                         @endforeach

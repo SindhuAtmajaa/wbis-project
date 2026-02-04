@@ -149,15 +149,26 @@ class NasabahController extends Controller
         return redirect()->route('nasabah')->with('success', 'Data berhasil diperbarui');
     }
 
+    public function destroy($id)
+    {
+        // Cari data berdasarkan ID
+        $nasabah = PengajuanAgunan::findOrFail($id);
+        
+        // Hapus data
+        $nasabah->delete();
+
+        // Kembali ke halaman index dengan pesan sukses
+        return redirect()->route('nasabah')->with('success', 'Data nasabah berhasil dihapus!');
+    }
+
     public function verify($id)
     {
         $item = PengajuanAgunan::findOrFail($id);
 
-        if ($item->status_verifikasi !== 'draft') {
-            return redirect()->back()->with('error', 'Data Sudah Diverifikasi');
+        if (!is_null($item->verifikator_id)) {
+            return redirect()->back()->with('error', 'Data ini sudah diverifikasi.');
         }
 
-        // Gunakan Auth::id() sebagai pengganti auth()->id()
         $item->update([
             'verifikator_id'    => Auth::id(), 
             'status_verifikasi' => 'verified'
@@ -166,19 +177,24 @@ class NasabahController extends Controller
         return redirect()->back()->with('success', 'Data berhasil diverifikasi.');
     }
 
-    public function cancel($id)
+   public function cancel($id)
     {
         $item = PengajuanAgunan::findOrFail($id);
+        $user = Auth::user();
 
-        // Cek apakah yang login adalah yang memverifikasi
-        if (Auth::id() !== $item->verifikator_id) {
-            return redirect()->back()->with('error', 'Anda tidak memiliki otoritas.');
+        // Pastikan pengecekan jabatan sesuai dengan isi database ('Admin')
+        $isAdmin = ($user->jabatan == 'Admin');
+        $isVerifikator = ($item->verifikator_id == $user->id);
+
+        if ($isAdmin || $isVerifikator) {
+            $item->update([
+                'status_verifikasi' => 'draft',
+                'verifikator_id'    => null
+            ]);
+
+            return redirect()->back()->with('success', 'Verifikasi berhasil dibatalkan.');
         }
 
-        $item->update([
-            'status_verifikasi' => 'dibatalkan'
-        ]);
-
-        return redirect()->back()->with('success', 'Verifikasi dibatalkan.');
+        return redirect()->back()->with('error', 'Otoritas ditolak: Hanya Admin atau Verifikator yang bisa membatalkan.');
     }
 }
