@@ -23,40 +23,38 @@
             <!-- Divider -->
             <hr class="sidebar-divider">
 
-            <!-- Heading -->
-            <div class="sidebar-heading">
-                MENU ADMIN
-            </div>
+            @if (auth()->user()->jabatan == 'Admin')
+                <!-- Heading -->
+                <div class="sidebar-heading">
+                    MENU ADMIN
+                </div>
 
-            <!-- Nav Item - Charts -->
-            <li class="nav-item {{ $menuAdminUser?? '' }}">
-                <a class="nav-link" href="{{ route('user') }}">
-                    <i class="fas fa-users"></i>
-                    <span>Data User</span></a>
-            </li>
+                <!-- Nav Item - Charts -->
+                <li class="nav-item {{ $menuAdminUser?? '' }}">
+                    <a class="nav-link" href="{{ route('user') }}">
+                        <i class="fas fa-users"></i>
+                        <span>Data User</span></a>
+                </li>
 
-            {{-- <!-- Nav Item - Tables -->
-            <li class="nav-item {{ $menuAdminKjpp?? '' }}">
-                <a class="nav-link" href="{{ route('kjpp') }}">
-                    <i class="fas fa-fw fa-table"></i>
-                    <span>KJPP</span></a>
-            </li> --}}
+                <!-- Nav Item - Nasabah -->
+                <li class="nav-item {{ $menuNasabah?? '' }}">
+                    <a class="nav-link" href="{{ route('nasabah') }}">
+                        <i class="fas fa-fw fa-user-plus"></i>
+                        <span>Nasabah</span></a>
+                </li>
+            @else
+                <!-- Heading -->
+                <div class="sidebar-heading">
+                    MENU KARYAWAN
+                </div>
 
-            <!-- Divider -->
-            {{-- <hr class="sidebar-divider d-none d-md-block"> --}}
-            <hr class="sidebar-divider">
-
-            <!-- Heading -->
-            <div class="sidebar-heading">
-                MENU KARYAWAN
-            </div>
-
-            <!-- Nav Item - Nasabah -->
-            <li class="nav-item {{ $menuNasabah?? '' }}">
-                <a class="nav-link" href="{{ route('nasabah') }}">
-                    <i class="fas fa-fw fa-user-plus"></i>
-                    <span>Nasabah</span></a>
-            </li>
+                <!-- Nav Item - Nasabah -->
+                <li class="nav-item {{ $menuNasabah?? '' }}">
+                    <a class="nav-link" href="{{ route('nasabah') }}">
+                        <i class="fas fa-fw fa-user-plus"></i>
+                        <span>Nasabah</span></a>
+                </li>
+            @endif
 
             <!-- Divider -->
             {{-- <hr class="sidebar-divider d-none d-md-block"> --}}
