@@ -6,7 +6,6 @@ use App\Http\Controllers\KjppController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\NasabahController;
 use App\Http\Controllers\DashboardController;
-use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 Route::get('/', function () {
     return view('welcome');
@@ -54,6 +53,9 @@ Route::middleware('checkLogin')->group(function () {
     Route::get('nasabah/edit/{id}',[NasabahController::class, 'edit'])->name('nasabahEdit');
     Route::post('nasabah/update/{id}',[NasabahController::class, 'update'])->name('nasabahUpdate');
     Route::delete('nasabah/destroy/{id}',[NasabahController::class, 'destroy'])->name('nasabahDestroy');
+
+    Route::get('nasabah/excel',[NasabahController::class, 'excel'])->name('nasabahExcel');
+    Route::get('nasabah/pdf',[NasabahController::class, 'pdf'])->name('nasabahPdf');
 
     Route::post('nasabah/verify/{id}', [NasabahController::class, 'verify'])->name('nasabahVerify');
     Route::post('nasabah/cancel/{id}', [NasabahController::class, 'cancel'])->name('nasabahCancel');

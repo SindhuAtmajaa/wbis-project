@@ -35,12 +35,12 @@
                     <span>Data User</span></a>
             </li>
 
-            <!-- Nav Item - Tables -->
+            {{-- <!-- Nav Item - Tables -->
             <li class="nav-item {{ $menuAdminKjpp?? '' }}">
                 <a class="nav-link" href="{{ route('kjpp') }}">
                     <i class="fas fa-fw fa-table"></i>
                     <span>KJPP</span></a>
-            </li>
+            </li> --}}
 
             <!-- Divider -->
             {{-- <hr class="sidebar-divider d-none d-md-block"> --}}

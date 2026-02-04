@@ -6,7 +6,10 @@ use App\Models\Kjpp;
 use App\Models\Cabang;
 use Illuminate\Http\Request;
 use App\Models\PengajuanAgunan;
+use Barryvdh\DomPDF\Facade\Pdf;
 use App\Http\Controllers\Controller;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\PengajuanAgunanExport;
 use Illuminate\Support\Facades\Auth; //wajib import class Auth
 
 class NasabahController extends Controller
@@ -196,5 +199,23 @@ class NasabahController extends Controller
         }
 
         return redirect()->back()->with('error', 'Otoritas ditolak: Hanya Admin atau Verifikator yang bisa membatalkan.');
+    }
+
+    public function excel()
+    {
+        $filename = now()->format('d-m-Y_H.i.s');
+        return Excel::download(new PengajuanAgunanExport, 'Data Nasabah_'.$filename.'.xlsx');
+    }
+
+    public function pdf()
+    {
+        $data = array(
+            'nasabah' => PengajuanAgunan::get(),
+            'date' => now()->format('d-m-Y_H.i.s'),
+        );
+
+        $filename = now()->format('d-m-Y_H.i.s');
+        $pdf = Pdf::loadView('admin/nasabah/pdf', $data);
+        return $pdf->setPaper('A4', 'landscape')->stream('Data Nasabah_'.$filename.'.pdf'); //mengatur ukuran kertas A4 dan orientasi landscape
     }
 }
